@@ -6,6 +6,7 @@ import {
   CircleUserRound,
   MailOpen,
   Moon,
+  Send,
   Settings,
   Sun,
 } from "lucide-react";
@@ -155,7 +156,7 @@ export function QuickTools({
           >
             <PopoverTrigger asChild>
               <button type="button" aria-label="Messages" title="Messages">
-                <MailOpen className="size-[18px]" />
+                <Send className="size-[18px]" />
               </button>
             </PopoverTrigger>
             <PopoverContent
