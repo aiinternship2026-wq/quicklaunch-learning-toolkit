@@ -1934,15 +1934,19 @@ nav a { transition: background .25s, color .25s, border-color .25s; }
   --sidebar-border: oklch(1 0 0 / 12%);
   --sidebar-ring: var(--lime);
 }
-/* Directors office ships as a full-screen app; dock it inside the page instead */
+/* Directors office ships as a full-screen app; render it as a normal page like the other modules */
 .solvik .app-shell.directors-embedded {
-  position: relative;
+  position: static;
   inset: auto;
-  height: calc(100dvh - 200px);
-  min-height: 640px;
-  border: 1px solid var(--glass-border);
-  border-radius: 28px;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
+.solvik .app-shell.directors-embedded .dashboard-device { height: auto; overflow: visible; }
+.solvik .app-shell.directors-embedded .device-content { overflow: visible; padding: 0; }
 /* @theme inline resolves --color-* at :root; re-resolve the ones module CSS reads */
 .solvik,
 .solvik :is(.admin-module, .finance-module, .academic-module) {
