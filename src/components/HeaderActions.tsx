@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Bell, Briefcase, Check, Save, Search } from "lucide-react";
+import { AppWindow, Bell, Check, Save, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import type { DockItem } from "@/components/DockNav";
@@ -115,21 +115,26 @@ export function HeaderActions({
         <span>{saved ? "Saved" : "Save"}</span>
       </button>
 
-      <button type="button" className="glass-icon relative" aria-label="Notifications" title="Notifications">
+      <Link
+        to="/academic/notifications"
+        className="glass-icon relative"
+        aria-label="Notifications"
+        title="Notifications"
+      >
         <Bell className="size-[18px]" />
         <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-salmon ring-2 ring-background" />
-      </button>
+      </Link>
 
       <button
         type="button"
-        className="glass-icon header-workspace-btn"
+        className="glass-icon header-workspace-btn xl:hidden"
         data-open={workspaceOpen ? "" : undefined}
         aria-label="Workspace"
         aria-pressed={workspaceOpen}
         title="Workspace"
         onClick={onWorkspaceToggle}
       >
-        <Briefcase className="size-[18px]" />
+        <AppWindow className="size-[18px]" />
       </button>
     </div>
   );

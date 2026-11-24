@@ -78,7 +78,12 @@ export function AppShell({
         <div className="solvik-backdrop-logo" />
       </div>
 
-      <QuickTools theme={theme} onThemeChange={setTheme} />
+      <QuickTools
+        theme={theme}
+        onThemeChange={setTheme}
+        workspaceOpen={workspaceOpen}
+        onWorkspaceToggle={() => setWorkspaceOpen((o) => !o)}
+      />
       <WorkspaceWidget open={workspaceOpen} onClose={() => setWorkspaceOpen(false)} />
 
       <div className="relative z-10 flex min-h-screen flex-col">

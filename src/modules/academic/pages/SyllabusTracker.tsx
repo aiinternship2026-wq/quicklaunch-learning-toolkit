@@ -390,31 +390,6 @@ export const SyllabusTracker: React.FC = () => {
           </div>
         )}
 
-        {/* Header Banner */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 text-indigo-700 text-xs font-semibold uppercase tracking-wider mb-1">
-                <Layers className="w-4 h-4" />
-                <span>{module.code} · Faculty Syllabus Management</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                {module.name}
-              </h2>
-          
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              <span className="px-3 py-1.5 rounded-lg bg-lime-50 text-lime-800 text-xs font-semibold border border-lime-200 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-lime-600" />
-                <span>{approvedBatches.length} Active Batches</span>
-              </span>
-            </div>
-          </div>
-
-          
-        </div>
-
         {/* Batch Cards Grid */}
         <div>
           

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import {
+  AppWindow,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
@@ -27,9 +28,13 @@ type ToolName = "profile" | "calendar" | "messages";
 export function QuickTools({
   theme,
   onThemeChange,
+  workspaceOpen = false,
+  onWorkspaceToggle,
 }: {
   theme: AppTheme;
   onThemeChange: (theme: AppTheme) => void;
+  workspaceOpen?: boolean;
+  onWorkspaceToggle?: () => void;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const [activeTool, setActiveTool] = useState<ToolName | null>(null);
@@ -174,6 +179,17 @@ export function QuickTools({
               </div>
             </PopoverContent>
           </Popover>
+
+          <button
+            type="button"
+            aria-label="Workspace"
+            title="Workspace"
+            aria-pressed={workspaceOpen}
+            data-open={workspaceOpen ? "" : undefined}
+            onClick={onWorkspaceToggle}
+          >
+            <AppWindow className="size-[18px]" />
+          </button>
 
           <span className="my-1 h-px w-6 bg-glass-border" />
           <button

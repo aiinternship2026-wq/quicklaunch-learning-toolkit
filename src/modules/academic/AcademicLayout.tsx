@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate, Outlet } from '@tanstack/react-router';
+import { Link, Navigate, Outlet, useRouterState } from '@tanstack/react-router';
+import { CircleUserRound } from 'lucide-react';
 import { TrainerProvider, useTrainer } from './context/TrainerContext';
 import { Header } from './components/layout/Header';
 import { ToastContainer } from './components/common/Toast';
@@ -8,34 +9,45 @@ const pages = [
   { to: '/academic', label: 'Dashboard', exact: true },
   { to: '/academic/syllabus', label: 'My class  Schedule', exact: false },
   { to: '/academic/notes', label: 'Notes', exact: false },
-  { to: '/academic/attendance', label: 'Attendance', exact: false },
-  { to: '/academic/notifications', label: 'Notifications', exact: false },
   { to: '/academic/examinations', label: 'Examinations', exact: false },
-  { to: '/academic/profile', label: 'Profile', exact: false },
+  { to: '/academic/profile', label: 'Profile', exact: false, icon: CircleUserRound },
 ] as const;
+
+/** Pages that go straight to their content; the title row only shows on the portal home. */
+const TITLE_ROW_HIDDEN = ['/academic/syllabus', '/academic/notes', '/academic/examinations'];
 
 function Portal() {
   const { toasts, removeToast } = useTrainer();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const showTitleRow = !TITLE_ROW_HIDDEN.some(
+    (page) => pathname === page || pathname.startsWith(`${page}/`)
+  );
+
   return (
     <div className="space-y-6">
       {/* Same underline tab menu as Admission */}
       <div className="overflow-x-auto border-b border-border">
         <nav aria-label="Academic pages" className="academic-tabs -mb-px flex min-w-max gap-1">
-          {pages.map((page) => (
-            <Link
-              key={page.to}
-              to={page.to}
-              activeOptions={{ exact: page.exact }}
-              activeProps={{ className: 'border-primary text-primary', 'aria-current': 'page' }}
-              inactiveProps={{ className: 'border-transparent text-muted-foreground hover:text-foreground' }}
-              className="whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition"
-            >
-              {page.label}
-            </Link>
-          ))}
+          {pages.map((page) => {
+            const Icon = 'icon' in page ? page.icon : undefined;
+            return (
+              <Link
+                key={page.to}
+                to={page.to}
+                activeOptions={{ exact: page.exact }}
+                activeProps={{ className: 'border-primary text-primary', 'aria-current': 'page' }}
+                inactiveProps={{ className: 'border-transparent text-muted-foreground hover:text-foreground' }}
+                className="whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition"
+                aria-label={Icon ? page.label : undefined}
+                title={Icon ? page.label : undefined}
+              >
+                {Icon ? <Icon className="size-4" /> : page.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
-      <Header />
+      {showTitleRow && <Header />}
       <main className="w-full">
         <Outlet />
       </main>

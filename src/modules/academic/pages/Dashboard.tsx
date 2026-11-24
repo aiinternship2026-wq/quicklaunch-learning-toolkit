@@ -396,40 +396,6 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick day selector */}
-            <div className="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-1 text-xs">
-              <div className="flex items-center gap-1 flex-wrap">
-                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mr-1">
-                  Day Schedule:
-                </span>
-                {dayScheduleOptions.map((d) => {
-                  const isSelected = activeDayName === d.dayName;
-                  return (
-                    <button
-                      key={d.dayName}
-                      onClick={() => setActiveDate(d.date)}
-                      className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-indigo-600 text-white shadow-2xs'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
-                      }`}
-                    >
-                      {d.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {!isViewingToday && (
-                <button
-                  onClick={() => setActiveDate(todayStr)}
-                  className="text-[10px] font-semibold text-indigo-600 hover:text-indigo-800 hover:underline cursor-pointer"
-                >
-                  Reset to Today ({todayDayName})
-                </button>
-              )}
-            </div>
-
             {todayClasses.length === 0 ? (
               <EmptyState
                 icon={CalendarDays}
@@ -468,7 +434,7 @@ export const Dashboard: React.FC = () => {
                           {item.moduleName}
                         </h4>
                         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] text-slate-500 font-mono-numbers">
-                          <span className="font-semibold text-slate-700">
+                          <span className="rounded-md bg-amber-100 px-1.5 py-0.5 font-bold text-amber-900 ring-1 ring-amber-200">
                             {item.startTime} – {item.endTime}
                           </span>
                           <span>·</span>
@@ -515,179 +481,14 @@ export const Dashboard: React.FC = () => {
                 ))}
               </div>
             )}
-
-            {/* Off-Day Notice: Explicitly explains why MWF or TTS is not running today */}
-            {offDayClasses.length > 0 && (
-              <div className="p-3.5 rounded-xl bg-slate-50/90 border border-slate-200 text-[10px] text-slate-600 flex items-start gap-2.5">
-                <Info className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-semibold text-slate-800">
-                    Off-Schedule Batches Today ({activeDayName}):
-                  </span>
-                  <p className="mt-0.5 text-slate-500 leading-relaxed">
-                    {offDayClasses
-                      .map((batch) =>
-                        `${batch.batch} (${batch.startTime}–${batch.endTime}; ${getBatchDaysDescription(batch.batch, batch.scheduledDays)})`
-                      )
-                      .join(', ')}{' '}
-                    is not scheduled on {activeDayName}s. That slot is designated as free hours for curriculum preparation, grading, and admin-assigned tasks.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {completedModuleSchedules.length > 0 && (
-              <div className="rounded-xl border border-lime-100 bg-lime-50/50 p-3.5">
-                <h3 className="text-xs font-bold text-lime-900">Completed Modules · No Further Classes Scheduled</h3>
-                <div className="mt-2 space-y-2">
-                  {completedModuleSchedules.map((schedule) => {
-                    const status = getScheduleCompletionStatus({
-                      schedule,
-                      modules,
-                      activityHistory,
-                      assessments: syllabusAssessments,
-                      examinations,
-                      examinationMarks
-                    });
-                    const exam = status.examination;
-                    const topicCount = modules.find((item) => item.id === schedule.moduleId)?.topics.length ?? 0;
-                    const endDate = getBatchEndDate(schedule, topicCount);
-                    return (
-                      <div
-                        key={`${schedule.id}-${schedule.moduleId}`}
-                        className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-lime-100 bg-white px-3 py-2"
-                      >
-                        <div>
-                          <p className="text-xs font-semibold text-slate-900">{schedule.batch} · {schedule.moduleName}</p>
-                          <p className="text-[10px] text-slate-500">{schedule.students.length} students</p>
-                          <p className="text-[10px] text-slate-500">
-                            Batch End Date: {endDate ? formatReadableDate(endDate) : '—'}
-                          </p>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="rounded-md border border-lime-200 bg-lime-50 px-2 py-0.5 text-[10px] font-semibold text-lime-700">
-                            Class Completed
-                          </span>
-                          {exam && (
-                            <button
-                              type="button"
-                              onClick={() => navigate({ to: '/academic/examinations', search: { exam: exam.id } })}
-                              className="rounded-md border border-lime-200 bg-lime-50 px-2 py-0.5 text-[10px] font-semibold text-lime-900 hover:bg-lime-100"
-                            >
-                              {status.isExamCompleted ? 'Exam Completed' : 'Exam Scheduled'}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
 
-          {/* Admin Assigned Tasks During Trainer Free Hours */}
-          <div className="p-3 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2 text-indigo-700 text-[10px] font-semibold uppercase tracking-wider mb-0.5">
-                  <Coffee className="w-4 h-4 text-amber-600" />
-                  <span>Faculty Free Hours & Administration Duties</span>
-                </div>
-                <h3 className="text-base font-bold text-slate-900">
-                  Admin-Assigned Tasks in Free Hours
-                </h3>
-              </div>
-              <span className="text-[10px] text-slate-500 font-mono-numbers">
-                {todayAdminTasks.length} Assigned Task{todayAdminTasks.length === 1 ? '' : 's'}
-              </span>
-            </div>
-
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              During the trainer's non-teaching free hours between scheduled batches, administrators assign evaluation, mentoring, and curriculum tasks.
-            </p>
-
-            <div className="space-y-3">
-              {todayAdminTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className={`p-4 rounded-xl border transition-all ${
-                    task.status === 'Completed'
-                      ? 'bg-slate-50/70 border-slate-200 opacity-80'
-                      : 'bg-white border-slate-200 shadow-2xs hover:border-indigo-300'
-                  }`}
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded font-mono-numbers">
-                          Free Slot: {task.startTime} – {task.endTime}
-                        </span>
-                        <span className="text-[10px] text-slate-400">·</span>
-                        <span className="text-[10px] font-semibold text-indigo-700">
-                          {task.category}
-                        </span>
-                        <span className="text-[10px] text-slate-400">·</span>
-                        <span className="text-[10px] text-slate-500">By {task.assignedBy}</span>
-                      </div>
-
-                      <h4
-                        className={`text-[10px] font-bold ${
-                          task.status === 'Completed' ? 'line-through text-slate-600' : 'text-slate-900'
-                        }`}
-                      >
-                        {task.title}
-                      </h4>
-
-                      <p className="text-[10px] text-slate-600 mt-1 leading-relaxed">
-                        {task.description}
-                      </p>
-
-                      {task.deliverables && (
-                        <p className="text-[10px] text-indigo-900 mt-1.5 font-medium">
-                          Deliverable: {task.deliverables}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-start">
-                      {task.status !== 'Completed' ? (
-                        <>
-                          <button
-                            onClick={() => updateAdminTaskStatus(task.id, 'In Progress')}
-                            className={`px-2.5 py-1 text-[11px] font-medium rounded-lg transition-colors cursor-pointer ${
-                              task.status === 'In Progress'
-                                ? 'bg-indigo-100 text-indigo-800 font-semibold'
-                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                            }`}
-                          >
-                            {task.status === 'In Progress' ? 'In Progress' : 'Start Task'}
-                          </button>
-                          <button
-                            onClick={() => updateAdminTaskStatus(task.id, 'Completed')}
-                            className="px-3 py-1 text-[11px] font-semibold text-white bg-lime-600 hover:bg-lime-700 rounded-lg transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
-                          >
-                            <Check className="w-3.5 h-3.5" />
-                            <span>Mark Done</span>
-                          </button>
-                        </>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-lime-700 bg-lime-50 px-2.5 py-1 rounded-md border border-lime-200">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>Completed</span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Right 1 Col: Pending Overdue Reminders & Free Slots Summary */}
         <div className="space-y-6">
-          {/* Overdue Reminders */}
+          {/* Overdue Reminders: only shown while there is something pending */}
+          {overdueReminders.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
@@ -701,17 +502,7 @@ export const Dashboard: React.FC = () => {
               )}
             </div>
 
-            {overdueReminders.length === 0 ? (
-              <div className="p-6 rounded-2xl bg-white border border-slate-200 text-center">
-                <div className="w-10 h-10 rounded-full bg-lime-50 text-lime-600 flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <h4 className="text-[11px] font-bold text-slate-900">You're all caught up!</h4>
-                <p className="mt-1 text-[11px] text-slate-500 leading-relaxed">
-                  All ended sessions have their syllabus topics or missed-class outcomes recorded.
-                </p>
-              </div>
-            ) : (
+            {overdueReminders.length > 0 && (
               <div className="space-y-3">
                 {overdueReminders.map((rem) => (
                   <div
@@ -750,6 +541,7 @@ export const Dashboard: React.FC = () => {
               </div>
             )}
           </div>
+          )}
 
           {/* Today's Non-Teaching Free Windows */}
           <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
