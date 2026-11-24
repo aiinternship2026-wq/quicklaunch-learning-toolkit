@@ -114,6 +114,7 @@ describe("App routing", () => {
     expect(NAV.some((item) => item.title === "Roles & Permissions" || item.to === "/finance/roles")).toBe(
       false,
     );
-    expect(router.matchRoutes("/finance/roles").at(-1)?.routeId).toBe(rootRouteId);
+    // The page is gone, so an unknown /finance/roles URL can only match the finance layout.
+    expect(router.matchRoutes("/finance/roles").at(-1)?.routeId).toBe("/finance");
   });
 });
