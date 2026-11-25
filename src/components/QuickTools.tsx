@@ -110,12 +110,12 @@ export function QuickTools({
                 </div>
               </div>
               <Link
-                to="/settings"
+                to="/academic/profile"
                 className="ghost-btn mt-4 w-full justify-center"
                 onClick={() => setActiveTool(null)}
               >
                 <Settings className="size-4" />
-                Profile &amp; settings
+                Open profile
               </Link>
             </PopoverContent>
           </Popover>
