@@ -3,7 +3,6 @@ import { useSearch } from '@tanstack/react-router';
 import {
   CalendarDays,
   CheckCircle2,
-  ClipboardCheck,
   Clock3,
   FileText,
   Users
@@ -214,23 +213,6 @@ export const Examinations: React.FC = () => {
 
   return (
     <div className="space-y-5">
-      <header className="rounded-xl border border-lime-100 bg-gradient-to-r from-lime-50 to-white p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <div className="rounded-lg bg-lime-900 p-2 text-white">
-            <ClipboardCheck className="h-5 w-5" />
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900">Examinations</h1>
-            <p className="mt-1 max-w-3xl text-sm text-slate-600">
-              Review Admin-published schedules and eligible students, then enter and submit examination marks.
-            </p>
-          </div>
-        </div>
-        <p className="mt-4 rounded-lg border border-lime-100 bg-white/80 px-3 py-2 text-xs leading-relaxed text-lime-900">
-          Admin schedules and eligibility lists are mock data in this frontend. Drafts and submitted marks are saved in this browser only; notifications are mock handoffs and do not reach an external Admin service.
-        </p>
-      </header>
-
       <div className="grid gap-3 sm:grid-cols-3">
         {summary.map(({ label, count, icon: Icon, color }) => (
           <div key={label} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4">

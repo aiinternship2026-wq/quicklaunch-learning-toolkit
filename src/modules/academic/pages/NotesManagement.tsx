@@ -180,14 +180,6 @@ export const NotesManagement: React.FC = () => {
 
   return (
     <div className="space-y-5">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-lime-700">Trainer Workspace</p>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">Notes Management</h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Manage topic-wise notes for modules assigned to {trainer.name}.
-        </p>
-      </div>
-
       {assignedModules.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-600">
           No modules are currently assigned to your trainer account.

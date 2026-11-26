@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import {
   AppWindow,
   CalendarDays,
@@ -8,11 +7,11 @@ import {
   MailOpen,
   Moon,
   Send,
-  Settings,
   Sun,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { ProfileDialog } from "@/components/ProfileDialog";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -84,41 +83,21 @@ export function QuickTools({
     >
       <div className="quick-tools-panel" id="quick-tools-panel" inert={collapsed}>
         <div className="icon-rail">
-          <Popover
+          <button
+            type="button"
+            aria-label="Profile"
+            title="Profile"
+            aria-haspopup="dialog"
+            aria-expanded={activeTool === "profile"}
+            data-open={activeTool === "profile" ? "" : undefined}
+            onClick={() => toolOpen("profile", true)}
+          >
+            <CircleUserRound className="size-[18px]" />
+          </button>
+          <ProfileDialog
             open={activeTool === "profile"}
             onOpenChange={(open) => toolOpen("profile", open)}
-          >
-            <PopoverTrigger asChild>
-              <button type="button" aria-label="Profile" title="Profile">
-                <CircleUserRound className="size-[18px]" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent
-              side="right"
-              align="center"
-              sideOffset={14}
-              collisionPadding={16}
-              className="quick-tools-popover"
-            >
-              <div className="flex items-center gap-3">
-                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-cream text-sm font-bold text-lime-foreground">
-                  PR
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate font-bold">Praneeth</p>
-                  <p className="text-sm text-muted-foreground">Administrator</p>
-                </div>
-              </div>
-              <Link
-                to="/academic/profile"
-                className="ghost-btn mt-4 w-full justify-center"
-                onClick={() => setActiveTool(null)}
-              >
-                <Settings className="size-4" />
-                Open profile
-              </Link>
-            </PopoverContent>
-          </Popover>
+          />
 
           <Popover
             open={activeTool === "calendar"}

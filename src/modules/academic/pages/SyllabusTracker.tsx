@@ -53,6 +53,7 @@ import {
 import { getScheduleCompletionStatus } from '../utils/scheduleCompletion';
 import { getBatchEndDate } from '../utils/batchEndDate';
 import { getTopicScheduledDates } from '../utils/topicScheduling';
+import { Attendance } from './Attendance';
 
 export const SyllabusTracker: React.FC = () => {
   const searchParams = useSearch({ strict: false });
@@ -621,6 +622,10 @@ export const SyllabusTracker: React.FC = () => {
             })}
           </div>
         </div>
+
+        <section aria-label="Batch attendance" className="border-t border-slate-200 pt-6">
+          <Attendance />
+        </section>
 
         {/* Student Roster Modal */}
         <StudentListModal

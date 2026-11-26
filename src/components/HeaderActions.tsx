@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { AppWindow, Bell, Check, Save, Search } from "lucide-react";
+import { AppWindow, Bell, Check, CircleUserRound, Save, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import type { DockItem } from "@/components/DockNav";
+import { ProfileDialog } from "@/components/ProfileDialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function HeaderActions({
@@ -17,6 +18,7 @@ export function HeaderActions({
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [saved, setSaved] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const results = useMemo(() => {
     const search = query.trim().toLowerCase();
@@ -124,6 +126,19 @@ export function HeaderActions({
         <Bell className="size-[18px]" />
         <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-salmon ring-2 ring-background" />
       </Link>
+
+      <button
+        type="button"
+        className="glass-icon xl:hidden"
+        aria-label="Profile"
+        title="Profile"
+        aria-haspopup="dialog"
+        aria-expanded={profileOpen}
+        onClick={() => setProfileOpen(true)}
+      >
+        <CircleUserRound className="size-[18px]" />
+      </button>
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
 
       <button
         type="button"
